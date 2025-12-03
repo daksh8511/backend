@@ -67,7 +67,8 @@ app.get("/users", async (req, res) => {
     const GetUserList = await UserModel.find();
     return res
       .status(200)
-      .json({ message: "All users are retrived", users: GetUserList });
+      .json({ message: "All users are retrived", users: GetUserList })
+      .send(GetUserList);
   } catch (error) {
     return res.status(500).json({ message: "Server side wrong" });
   }
