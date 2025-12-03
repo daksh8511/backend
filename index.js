@@ -74,6 +74,21 @@ app.get("/users", async (req, res) => {
   }
 });
 
+app.post("/delete_user", async (req, res) => {
+  const { _id } = req.body;
+
+  try {
+    const findUser = await UserModel.findByIdAndDelete({ _id });
+
+    return res
+      .status(200)
+      .json({ message: "User delete successfully" })
+      .send({ user: findUser });
+  } catch (error) {
+    return res.status(500).json({ message: "Server side error" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log("server start : ", PORT);
 });
