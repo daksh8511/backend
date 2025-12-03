@@ -8,11 +8,11 @@ app.use(cors())
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "*",
     methods: ["GET", "POST"],
   })
 );
-const PORT = 4000;
+const PORT = process.env.PORT || 3000;
 ConnecetDB();
 
 app.post("/register", async (req, res) => {
