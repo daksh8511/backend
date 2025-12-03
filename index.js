@@ -1,10 +1,13 @@
 import express from "express";
-import cors from 'cors'
+import cors from "cors";
 import ConnecetDB from "./ConnectDB.js";
 import UserModel from "./NewUser.js";
+import dotenv from 'dotenv'
+
+dotenv.config()
 const app = express();
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 
 app.use(
   cors({
@@ -36,6 +39,26 @@ app.post("/register", async (req, res) => {
     return res.status(200).json({ message: "Signup success" });
   } catch (error) {
     console.error("Error : ", error);
+  }
+});
+
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: "Enter email and password" });
+  }
+
+  try {
+    const User = await UserModel.findOne({ email: email });
+
+    if (User.password !== password) {
+      return res.status(400).json({ message: "passsword are not match" });
+    }
+
+    return res.status(200).json({ message: "Login success" });
+  } catch (error) {
+    return res.status(500).json({ message: "Server side error" });
   }
 });
 
