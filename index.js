@@ -2,9 +2,9 @@ import express from "express";
 import cors from "cors";
 import ConnecetDB from "./ConnectDB.js";
 import UserModel from "./NewUser.js";
-import dotenv from 'dotenv'
+import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -59,6 +59,17 @@ app.post("/login", async (req, res) => {
     return res.status(200).json({ message: "Login success" });
   } catch (error) {
     return res.status(500).json({ message: "Server side error" });
+  }
+});
+
+app.get("/users", async (req, res) => {
+  try {
+    const GetUserList = await UserModel.find();
+    return res
+      .status(200)
+      .json({ message: "All users are retrived", users: GetUserList });
+  } catch (error) {
+    return res.status(500).json({ message: "Server side wrong" });
   }
 });
 
