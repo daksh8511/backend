@@ -36,7 +36,9 @@ app.post("/register", async (req, res) => {
 
     await UserRegistration.save();
 
-    return res.status(200).json({ message: "Signup success" });
+    return res
+      .status(200)
+      .json({ message: "Signup success", user: UserRegistration });
   } catch (error) {
     console.error("Error : ", error);
   }
@@ -86,6 +88,27 @@ app.post("/delete_user", async (req, res) => {
       .send({ user: findUser });
   } catch (error) {
     return res.status(500).json({ message: "Server side error" });
+  }
+});
+
+app.post("/update_user", async (req, res) => {
+  const { name, email, _id } = req.body;
+
+  const updated = {
+    name,
+    email,
+  };
+  try {
+    const User = await UserModel.updateOne(
+      { _id: _id },
+      { $set: { email: updated?.email, name: updated?.name } }
+    );
+
+    return res
+      .status(200)
+      .json({ message: "User update successfully", user: User });
+  } catch (error) {
+    return res.status(500).json({ message: "Server side wrong!", user : User });
   }
 });
 
